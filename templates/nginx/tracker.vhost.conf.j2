@@ -26,13 +26,13 @@ server {
   client_max_body_size 20m;
 
   # TLS certificates
-  ssl_certificate       /etc/letsencrypt/live/{{ tracker.tbbs.me }}/fullchain.pem;
-  ssl_certificate_key   /etc/letsencrypt/live/{{ tracker.tbbs.me }}/privkey.pem;
+  ssl_certificate       /etc/letsencrypt/live/tracker.tbbs.me/fullchain.pem;
+  ssl_certificate_key   /etc/letsencrypt/live/tracker.tbbs.me/privkey.pem;
   # OCSP stapling
   ssl_stapling on;
   ssl_stapling_verify on;
-  ssl_trusted_certificate /etc/letsencrypt/live/{{ tracker.tbbs.me }}/fullchain.pem;
-#  ssl_stapling_file ssl_stapling_file /etc/dehydrated/certs/{{ tracker.tbbs.me }}/ocsp.der;
+  ssl_trusted_certificate /etc/letsencrypt/live/tracker.tbbs.me/fullchain.pem;
+#  ssl_stapling_file ssl_stapling_file /etc/dehydrated/certs/tracker.tbbs.me/ocsp.der;
 
 
   # don't allow access to some files or directories
