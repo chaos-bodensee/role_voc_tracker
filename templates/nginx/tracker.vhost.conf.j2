@@ -1,0 +1,58 @@
+upstream php {
+  server unix:/run/php5-fpm-www.sock;
+}
+
+server_names_hash_bucket_size 64;
+
+server {
+  listen [::]:80;
+  server_name tracker.tbbs.me;
+
+  # don't allow access to some files or directories
+  location ~* /.*\.(ht|sh|git|htaccess|inc|rb|py|pl|db|sqlite|sqlite3)$ {
+    deny  all;
+  }
+
+  rewrite ^(.*) https://tracker.tbbs.me$1;
+  return 301 https://tracker.tbbs.me$request_uri;
+}
+
+server {
+  listen [::]:443;
+  server_name tracker.tbbs.me;
+
+  root /srv/www/cccongress/src/Public;
+
+  client_max_body_size 20m;
+
+  # TLS certificates
+  ssl_certificate       /etc/letsencrypt/live/{{ tracker.tbbs.me }}/fullchain.pem;
+  ssl_certificate_key   /etc/letsencrypt/live/{{ tracker.tbbs.me }}/privkey.pem;
+  # OCSP stapling
+  ssl_stapling on;
+  ssl_stapling_verify on;
+  ssl_trusted_certificate /etc/letsencrypt/live/{{ tracker.tbbs.me }}/fullchain.pem;
+#  ssl_stapling_file ssl_stapling_file /etc/dehydrated/certs/{{ tracker.tbbs.me }}/ocsp.der;
+
+
+  # don't allow access to some files or directories
+  location ~* /.*\.(ht|sh|git|htaccess|inc|rb|py|pl|db|sqlite|sqlite3)$ {
+    deny  all;
+  }
+
+  location ~ ^\/(downloads|css|images|thumbnails|javascript|fahrplan)\/ {
+  	expires 120h; # 5 days
+  }
+
+  location /favicon.ico {
+  	expires max;
+  }
+
+  location / {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass php;
+    # remove trailing slash
+    rewrite ^(.+)/$ $1 permanent;
+    rewrite ^(.*)$ /index.php$1 break;
+  }
+}

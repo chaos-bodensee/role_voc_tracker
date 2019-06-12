@@ -1,3 +1,6 @@
 ---
 - include_tasks: versioncheck.yml
   when: submodules_versioncheck | bool
+
+- include_tasks: nginx.yml
+  when: tracker_nginx_config | bool

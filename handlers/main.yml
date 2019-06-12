@@ -1,0 +1,10 @@
+---
+- name: reload nginx
+  become: true
+  service:
+    name: nginx
+    state: reloaded
+
+- name: reload php5-fpm
+  become: true
+  service: name=php5-fpm state=reloaded

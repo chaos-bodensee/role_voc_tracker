@@ -2,3 +2,19 @@
 # should we check the role version to prevent stupid users with outdated roles?
 submodules_versioncheck: true
 
+tracker_nginx_config: true
+
+# nginx stuff
+webroot_path: "/var/www"
+
+voc_whitelisted_network: '172.23.16.0/20'
+
+nginx_ips_allow_stats: [
+  "::1",
+  "127.0.0.1",
+  "{{ voc_whitelisted_network }}"
+]
+
+rtmp: false
+php: true
+nginx: true

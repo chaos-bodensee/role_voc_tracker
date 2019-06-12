@@ -1,0 +1,60 @@
+---
+# Installation
+- name: install nginx package
+  become: true
+  package:
+    name: nginx
+    state: present
+
+# Create config
+- name: remove default vhost
+  become: true
+  file:
+    dest: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: configure nginx
+  become: true
+  template: dest=/etc/nginx/nginx.conf
+            src=nginx/nginx.conf.j2
+            mode=0644 owner=root group=root
+            validate='nginx -t -c %s'
+  notify:
+    - reload nginx
+
+  # Manage vhost
+- name: "create {{ item }} vhost"
+  become: true
+  template: dest="/etc/nginx/sites-available/{{ item }}"
+            src="nginx/{{ item }}.j2"
+            mode=0640 owner=root group=root
+  with_items:
+    - tracker.vhost.conf
+    - default.vhost.conf
+  notify:
+    - reload nginx
+
+- name: "enable {{ item }} vhost"
+  become: true
+  file: src=/etc/nginx/sites-available/{{ item }}
+        dest=/etc/nginx/sites-enabled/{{ item }}
+        state=link
+  notify:
+    - reload nginx
+  with_items:
+    - tracker.vhost.conf
+    - default.vhost.conf
+
+# tracker fastcgi_params
+- name: create tracker spcific fastcgi_params
+  become: true
+  template: dest="/etc/nginx/fastcgi_params"
+            src="nginx/fastcgi_params"
+            mode=0640 owner=root group=root
+  notify:
+    - reload nginx
+
+- name: start nginx
+  become: true
+  service: name=nginx enabled=yes state=started
+  when: nginx is defined and nginx | bool
