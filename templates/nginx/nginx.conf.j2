@@ -93,7 +93,6 @@ http {
     location ~* ^/stats/nginx {
       stub_status on;
       access_log   off;
-
 {% for ip in nginx_ips_allow_stats %}
       allow {{ ip }};
 {% endfor %}
@@ -129,4 +128,3 @@ http {
 {% endif %}
   }
 }
-

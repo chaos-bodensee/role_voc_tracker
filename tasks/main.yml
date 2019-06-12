@@ -2,11 +2,11 @@
 - include_tasks: versioncheck.yml
   when: submodules_versioncheck | bool
 
-- include_tasks: nginx.yml
-  when: tracker_nginx_config | bool
-
 - include_tasks: php.yml
   when: tracker_php_config | bool
+
+- include_tasks: nginx.yml
+  when: tracker_nginx_config | bool
 
 - name: install tracker specific packages
   become: true

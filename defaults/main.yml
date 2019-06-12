@@ -3,19 +3,21 @@
 submodules_versioncheck: true
 
 tracker_nginx_config: true
-tracker_php_config: true
+# we use more modern php
+tracker_php_config: false
 
 # nginx stuff
 webroot_path: "/var/www"
 
 voc_whitelisted_network: '172.23.16.0/20'
 
-nginx_ips_allow_stats: [
-  "::1",
-  "127.0.0.1",
-  "{{ voc_whitelisted_network }}"
-]
+nginx_ips_allow_stats:
+  - "::1"
+  - "127.0.0.1"
+  - "{{ voc_whitelisted_network }}"
 
 rtmp: false
 php: true
 nginx: true
+nginx_worker_processes: 'auto'
+nginx_worker_connections: '4096'
