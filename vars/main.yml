@@ -17,7 +17,7 @@ tracker_php_packages:
     - php5-dev
 
 tracker_packages: 
-    - libxdiff0
+#    - libxdiff0
     - mgdiff
     - curl
     - libxslt1.1
