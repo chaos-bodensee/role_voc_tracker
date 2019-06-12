@@ -22,6 +22,6 @@ tracker_packages:
     - curl
     - libxslt1.1
     - libintl-perl
-    - php-xdiff
+#    - php-xdiff
     - autopostgresqlbackup
 
