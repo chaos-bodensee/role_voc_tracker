@@ -3,6 +3,7 @@
 submodules_versioncheck: true
 
 tracker_nginx_config: true
+tracker_php_config: true
 
 # nginx stuff
 webroot_path: "/var/www"

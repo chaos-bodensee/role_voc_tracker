@@ -1,0 +1,35 @@
+---
+# Install PHP + stuff
+- name: install streaming page packages
+  become: true
+  package:
+    name: "{{ tracker_php_packages }}"
+    state: present
+
+# Create default pool
+- name: configure php-fpm
+  become: true
+  template: dest=/etc/php5/fpm/pool.d/www.conf
+            src=php_fpm/www.conf.j2
+            mode=0644 owner=root group=root
+  notify: reload php5-fpm
+
+# Change php.ini settings
+- name: disable php version expose
+  become: true
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp="expose_php.*=.*"
+              line="expose_php = Off"
+  notify: reload php5-fpm
+
+- name: enable php short_open_tag
+  become: true
+  lineinfile: dest=/etc/php5/fpm/php.ini
+              regexp="short_open_tag.*=.*"
+              line="short_open_tag = On"
+  notify: reload php5-fpm
+
+  # Enable service
+- name: start php-fpm
+  become: true
+  service: name=php5-fpm enabled=yes state=started

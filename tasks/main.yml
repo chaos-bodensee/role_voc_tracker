@@ -4,3 +4,7 @@
 
 - include_tasks: nginx.yml
   when: tracker_nginx_config | bool
+
+- include_tasks: php.yml
+  when: tracker_php_config | bool
+
