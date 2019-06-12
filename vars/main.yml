@@ -16,4 +16,12 @@ tracker_php_packages:
     - php-pear
     - php5-dev
 
+tracker_packages: 
+    - libxdiff0
+    - mgdiff
+    - curl
+    - libxslt1.1
+    - libintl-perl
+    - php-xdiff
+    - autopostgresqlbackup
 

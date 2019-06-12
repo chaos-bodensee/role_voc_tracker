@@ -8,3 +8,18 @@
 - include_tasks: php.yml
   when: tracker_php_config | bool
 
+- name: install tracker specific packages
+  become: true
+  package:
+    name: "{{ tracker_packages }}"
+    state: present
+
+- name: git checkout tracker repo
+  become: true
+  git:
+    repo: https://github.com/crs-tools/tracker.git
+    dest: /srv/www/cccongress
+
+- name: create logrotate config
+  copy: src=tracker dest=/etc/logrotate.d
+
